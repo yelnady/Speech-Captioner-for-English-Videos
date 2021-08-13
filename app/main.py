@@ -13,6 +13,8 @@ import torch
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import  FileStorage
 from threading import Thread, Event
+import tensorflow as tf
+tf.keras.backend.clear_session()
 
 processor = Wav2Vec2Processor.from_pretrained("saved_model")
 model = Wav2Vec2ForCTC.from_pretrained("saved_model")
