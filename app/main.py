@@ -17,7 +17,7 @@ from threading import Thread, Event
 processor = Wav2Vec2Processor.from_pretrained("saved_model")
 model = Wav2Vec2ForCTC.from_pretrained("saved_model")
 
-port = 12300
+# port = 12300
 
 threads = [Thread()]
 def project_id():
@@ -27,9 +27,9 @@ def project_id():
     return info['project_id']
 
 
-base_url = "/%s/port/%s/" % (project_id(), port)
-static_url = "/%s/port/%s/static" % (project_id(), port)
-app = Flask(__name__, static_url_path=static_url)
+#base_url = "/%s/port/%s/" % (project_id(), port)
+#static_url = "/%s/port/%s/static" % (project_id(), port)
+app = Flask(__name__)
 
 def youtube_download(youtubeURL):
 
@@ -94,12 +94,12 @@ def wav2vec(name_of_audio_output):
     return 1
 
 
-@app.route(base_url)
+@app.route('/')
 def home():
     name = "Audio Captioner - Universal"
     return render_template('home.html', name=name)
 
-@app.route(base_url+'/youtube-url', methods=['POST', 'GET'])
+@app.route('/youtube-url', methods=['POST', 'GET'])
 def youtube_url():
     global threads
     print("Function youtube_url has been called\n\n")
@@ -116,7 +116,7 @@ def youtube_url():
     return 'I am a title'
 
 
-@app.route(base_url+'/video-selected', methods=['POST', 'GET'])
+@app.route('/video-selected', methods=['POST', 'GET'])
 def video_selected():
     global threads
     print("Function video_selected has been called\n\n")
@@ -149,7 +149,7 @@ def long_runnning_job(youtube_url,is_it_youtube,file_object):
     print("Total Time (in minutes) is {}\n\n".format(timedelta(seconds=(time() - time_all))))
     return 'I am a title'
 
-@app.route(base_url+'/thread-check', methods=['POST', 'GET'])
+@app.route('/thread-check', methods=['POST', 'GET'])
 def thread_check():
     global threads
     return "1" if threads[0].is_alive() else "0"
