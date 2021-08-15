@@ -106,10 +106,7 @@ def youtube_url():
     global threads
     print("Function youtube_url has been called\n\n")
     youtube_url = request.args.get('youtube_url')
-    if os.path.exists("static/video_original.mp4"):
-        os.remove("static/video_original.mp4")
-    if os.path.exists("static/subtitles.vtt"):
-        os.remove("static/subtitles.vtt")
+    
     # I was calling the thread directly from here --> All I am doing now, is to call the thread from within the socket
     x = Thread(target=long_runnning_job, args=(youtube_url,True, None))
     x.start()
@@ -124,10 +121,6 @@ def video_selected():
     print("Function video_selected has been called\n\n")
     # We should this time get a file from the frontend, not youtube url
     file_object =request.files.get('file')
-    if os.path.exists("static/video_original.mp4"):
-        os.remove("static/video_original.mp4")
-    if os.path.exists("static/subtitles.vtt"):
-        os.remove("static/subtitles.vtt")
     file_object.save('static/video_original.mp4')
     
     x = Thread(target=long_runnning_job, args=(None,False,file_object))
